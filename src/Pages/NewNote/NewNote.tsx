@@ -1,4 +1,4 @@
-import NoteForm from "./components/NoteForm"
+import NoteForm from "../../components/NoteForm"
 import {NewNoteProps} from "../../types"
 
 function NewNote({onSubmit, onAddTag, availableTags}: NewNoteProps) {

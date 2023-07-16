@@ -2,14 +2,21 @@ import { Button, Col, Form, Row, Stack } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import CreatableReactSelect from "react-select/creatable";
 import { FormEvent, useRef, useState } from "react";
-import { NoteFormProps, Tag } from "../../../types";
+import { NoteFormProps, Tag } from "../types";
 import { v4 as uuidV4 } from "uuid";
 import { useNavigate } from "react-router-dom";
 
-function NoteForm({ onSubmit, onAddTag, availableTags }: NoteFormProps) {
+function NoteForm({
+  onSubmit,
+  onAddTag,
+  availableTags,
+  title = "",
+  markdown = "",
+  tags = [],
+}: NoteFormProps) {
   const titleRef = useRef<HTMLInputElement>(null);
   const markdownRef = useRef<HTMLTextAreaElement>(null);
-  const [selectedTags, setSelectedTags] = useState<Tag[]>([]);
+  const [selectedTags, setSelectedTags] = useState<Tag[]>(tags);
   const navigate = useNavigate();
 
   const handleEvent = (e: FormEvent) => {
@@ -19,7 +26,7 @@ function NoteForm({ onSubmit, onAddTag, availableTags }: NoteFormProps) {
       markdown: markdownRef.current!.value,
       tags: selectedTags,
     });
-    navigate("..")
+    navigate("..");
   };
 
   return (
@@ -29,7 +36,7 @@ function NoteForm({ onSubmit, onAddTag, availableTags }: NoteFormProps) {
           <Col>
             <Form.Group controlId="title">
               <Form.Label>Titulo</Form.Label>
-              <Form.Control ref={titleRef} required />
+              <Form.Control ref={titleRef} required defaultValue={title}/>
             </Form.Group>
           </Col>
           <Col>
@@ -46,8 +53,8 @@ function NoteForm({ onSubmit, onAddTag, availableTags }: NoteFormProps) {
                 })}
                 isMulti
                 placeholder="Escribe..."
-                options={availableTags.map(tag => {
-                  return {label: tag.label, value: tag.id}
+                options={availableTags.map((tag) => {
+                  return { label: tag.label, value: tag.id };
                 })}
                 onChange={(tags) => {
                   setSelectedTags(
@@ -62,7 +69,7 @@ function NoteForm({ onSubmit, onAddTag, availableTags }: NoteFormProps) {
         </Row>
         <Form.Group controlId="markdown">
           <Form.Label>Texto</Form.Label>
-          <Form.Control ref={markdownRef} required as="textarea" rows={15} />
+          <Form.Control ref={markdownRef} required as="textarea" rows={15} defaultValue={markdown}/>
         </Form.Group>
         <Stack className="justify-content-end" direction="horizontal" gap={3}>
           <Button type="submit" variant="primary">
