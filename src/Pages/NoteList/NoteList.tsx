@@ -3,7 +3,7 @@ import { Row, Col, Stack, Button, Form, Card, Badge } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import ReactSelect from "react-select";
 import { NoteListProps, Tag, SimplifiedNote } from "../../types";
-import styles from "./NoteList.module.css"
+import styles from "./NoteList.module.css";
 
 function NoteList({ availableTags, notes }: NoteListProps) {
   const [selectedTags, setSelectedTags] = useState<Tag[]>([]);
@@ -75,7 +75,7 @@ function NoteList({ availableTags, notes }: NoteListProps) {
       <Row xs={1} md={2} lg={3} xl={4} className="g-3">
         {filteredNotes.map((note) => (
           <Col key={note.id}>
-            <NoteCard id={note.id} title={note.title} tags={note.tags}/>
+            <NoteCard id={note.id} title={note.title} tags={note.tags} />
           </Col>
         ))}
       </Row>
@@ -83,23 +83,36 @@ function NoteList({ availableTags, notes }: NoteListProps) {
   );
 }
 
-function NoteCard({id, title, tags} : SimplifiedNote) {
+function NoteCard({ id, title, tags }: SimplifiedNote) {
   return (
-    <Card as={Link} to={`/${id}`} className={`h-100 text-reset text-decoration-none ${styles.card}`}>
+    <Card
+      as={Link}
+      to={`/${id}`}
+      className={`h-100 text-reset text-decoration-none ${styles.card}`}
+    >
       <Card.Body>
-        <Stack gap={2} className="align-items-center justify-content-center h-100">
+        <Stack
+          gap={2}
+          className="align-items-center justify-content-center h-100"
+        >
           <span className="fs-5">{title}</span>
           {tags.length > 0 && (
-            <Stack gap={1} direction="horizontal" className="justify-content-center flex-wrap">
+            <Stack
+              gap={1}
+              direction="horizontal"
+              className="justify-content-center flex-wrap"
+            >
               {tags.map((tag) => (
-                <Badge className="text-truncate" key={tag.id}>{tag.label}</Badge>
+                <Badge className="text-truncate" key={tag.id}>
+                  {tag.label}
+                </Badge>
               ))}
             </Stack>
           )}
         </Stack>
       </Card.Body>
     </Card>
-  )
+  );
 }
 
 export default NoteList;

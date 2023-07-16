@@ -45,3 +45,7 @@ export type SimplifiedNote = {
   title: string,
   id: string,
 }
+
+export type NoteLayaoutProps = {
+  notes: Note[]
+}

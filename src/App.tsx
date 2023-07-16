@@ -7,6 +7,8 @@ import useLocalStorage from "./Hooks/useLocalStorage";
 import { useMemo } from "react";
 import { v4 as uuidV4 } from "uuid";
 import NoteList from "./Pages/NoteList/NoteList";
+import NoteLayout from "./Pages/NoteLayout/NoteLayout";
+import Note from "./Pages/Note/Note";
 
 function App() {
   const [notes, setNotes] = useLocalStorage<RawNote[]>("NOTES", []);
@@ -51,8 +53,8 @@ function App() {
             />
           }
         />
-        <Route path="/:id">
-          <Route index element={<h1>Mostrar</h1>} />
+        <Route path="/:id" element={<NoteLayout notes={notesWithTag}/>}>
+          <Route index element={<Note />} />
           <Route path="edit" element={<h1>Editar</h1>} />
         </Route>
         <Route path="*" element={<Navigate to="/" />} />
