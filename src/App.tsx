@@ -1,5 +1,4 @@
 import "bootstrap/dist/css/bootstrap.min.css";
-import { Container } from "react-bootstrap";
 import { Routes, Route, Navigate } from "react-router-dom";
 import NewNote from "./Pages/NewNote/NewNote";
 import { RawNote, NoteData, Tag } from "./types";
@@ -10,8 +9,11 @@ import NoteList from "./Pages/NoteList/NoteList";
 import NoteLayout from "./Pages/NoteLayout/NoteLayout";
 import Note from "./Pages/Note/Note";
 import EditNote from "./Pages/EditNote/EditNote";
+import "./App.css"
+import { useThemeContext } from "./context/ThemeContext";
 
 function App() {
+  const { contextTheme } = useThemeContext();
   const [notes, setNotes] = useLocalStorage<RawNote[]>("NOTES", []);
   const [tags, setTags] = useLocalStorage<Tag[]>("TAGS", []);
 
@@ -74,7 +76,7 @@ function App() {
   }
 
   return (
-    <Container className="my-4">
+    <div id={contextTheme} className="p-4">
       <Routes>
         <Route
           path="/"
@@ -112,7 +114,7 @@ function App() {
         </Route>
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
-    </Container>
+    </div>
   );
 }
 

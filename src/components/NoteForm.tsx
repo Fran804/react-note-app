@@ -5,6 +5,7 @@ import { FormEvent, useRef, useState } from "react";
 import { NoteFormProps, Tag } from "../types";
 import { v4 as uuidV4 } from "uuid";
 import { useNavigate } from "react-router-dom";
+import { useThemeContext } from "../context/ThemeContext";
 
 function NoteForm({
   onSubmit,
@@ -17,6 +18,7 @@ function NoteForm({
   const titleRef = useRef<HTMLInputElement>(null);
   const markdownRef = useRef<HTMLTextAreaElement>(null);
   const [selectedTags, setSelectedTags] = useState<Tag[]>(tags);
+  const { contextTheme } = useThemeContext();
   const navigate = useNavigate();
 
   const handleEvent = (e: FormEvent) => {
@@ -36,13 +38,32 @@ function NoteForm({
           <Col>
             <Form.Group controlId="title">
               <Form.Label>Titulo</Form.Label>
-              <Form.Control ref={titleRef} required defaultValue={title}/>
+              <Form.Control
+                className={
+                  contextTheme === "Light" ? "inputLight" : "inputDark"
+                }
+                ref={titleRef}
+                required
+                defaultValue={title}
+              />
             </Form.Group>
           </Col>
           <Col>
             <Form.Group controlId="tags">
               <Form.Label>Etiquetas</Form.Label>
               <CreatableReactSelect
+                styles={{
+                  option: (styles) => ({
+                    ...styles,
+                    color: "black",
+                    cursor: "pointer",
+                  }),
+                  control: (styles) => ({
+                    ...styles,
+                    background: contextTheme === "Light" ? "white" : "#1D2135",
+                    border: contextTheme === "Light" ? "" : "none"
+                  }),
+                }}
                 onCreateOption={(label) => {
                   const newTag = { id: uuidV4(), label };
                   onAddTag(newTag);
@@ -69,14 +90,21 @@ function NoteForm({
         </Row>
         <Form.Group controlId="markdown">
           <Form.Label>Texto</Form.Label>
-          <Form.Control ref={markdownRef} required as="textarea" rows={15} defaultValue={markdown}/>
+          <Form.Control
+            className={contextTheme === "Light" ? "inputLight" : "inputDark"}
+            ref={markdownRef}
+            required
+            as="textarea"
+            rows={15}
+            defaultValue={markdown}
+          />
         </Form.Group>
         <Stack className="justify-content-end" direction="horizontal" gap={3}>
           <Button type="submit" variant="primary">
             Guardar
           </Button>
           <Link to="..">
-            <Button type="button" variant="outline-secondary">
+            <Button type="button" variant="danger">
               Cancelar
             </Button>
           </Link>

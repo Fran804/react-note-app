@@ -1,0 +1,39 @@
+#Dark {
+  height: 100vh;
+  background-color: #161927;
+  color: #f1f1f1;
+}
+
+#Light {
+  height: 100vh;
+  background-color: #f1f1f1;
+  color: #0d3f67;
+}
+
+.cardDark {
+  background-color: #1D2135;
+}
+
+.cardLight {
+  background-color: white;
+}
+
+.inputDark {
+  background-color: #1D2135;
+  border: none;
+  color: white;
+}
+
+.inputDark:focus {
+  background-color: #1D2135;
+  border: none;
+  color: white;
+}
+
+.inputLight {
+  background-color: white;
+}
+
+.iconFav {
+  font-size: 25px;
+}

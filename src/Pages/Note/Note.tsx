@@ -33,12 +33,12 @@ function Note({ onDelete }: NoteProps) {
                 onDelete(note.id);
                 navigate("/");
               }}
-              variant="outline-danger"
+              variant="danger"
             >
               Borrar
             </Button>
             <Link to="/">
-              <Button variant="outline-secondary">Atras</Button>
+              <Button variant="secondary">Atras</Button>
             </Link>
           </Stack>
         </Col>

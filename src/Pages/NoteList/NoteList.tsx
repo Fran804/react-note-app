@@ -18,6 +18,9 @@ import {
   EditTagsModalProps,
 } from "../../types";
 import styles from "./NoteList.module.css";
+import ReactSwitch from "react-switch";
+import { useThemeContext } from "../../context/ThemeContext";
+import { FaMoon, FaSun } from "react-icons/fa6";
 
 function NoteList({
   availableTags,
@@ -25,9 +28,17 @@ function NoteList({
   onDeleteTag,
   onUpdateTag,
 }: NoteListProps) {
+  const { contextTheme, setContextTheme } = useThemeContext();
   const [selectedTags, setSelectedTags] = useState<Tag[]>([]);
   const [title, setTitle] = useState("");
   const [editTagsModalIsOpen, setEditTagsModalIsOpen] = useState(false);
+  const [checked, setChecked] = useState(
+    contextTheme === "Light" ? false : true
+  );
+  const handleSwitch = (nextChecked: boolean) => {
+    setContextTheme((state: string) => (state === "Light" ? "Dark" : "Light"));
+    setChecked(nextChecked);
+  };
   const filteredNotes = useMemo(() => {
     return notes.filter((note) => {
       return (
@@ -49,6 +60,26 @@ function NoteList({
         </Col>
         <Col xs="auto">
           <Stack gap={2} direction="horizontal">
+            {contextTheme === "Light" ? (
+              <FaMoon className="iconFav" />
+            ) : (
+              <FaSun className="iconFav" />
+            )}
+            <ReactSwitch
+              checked={checked}
+              onChange={handleSwitch}
+              onColor="#86d3ff"
+              onHandleColor="#2693e6"
+              handleDiameter={30}
+              uncheckedIcon={false}
+              checkedIcon={false}
+              boxShadow="0px 1px 5px rgba(0, 0, 0, 0.6)"
+              activeBoxShadow="0px 0px 1px 10px rgba(0, 0, 0, 0.2)"
+              height={20}
+              width={48}
+              className="react-switch"
+              id="material-switch"
+            />
             <Link to="/new">
               <Button variant="primary">Crear</Button>
             </Link>
@@ -56,7 +87,7 @@ function NoteList({
               onClick={() => {
                 setEditTagsModalIsOpen(true);
               }}
-              variant="outline-secondary"
+              variant="secondary"
             >
               Editar Tags
             </Button>
@@ -69,6 +100,9 @@ function NoteList({
             <Form.Group controlId="title">
               <Form.Label>Buscar por titulo</Form.Label>
               <Form.Control
+                className={
+                  contextTheme === "Light" ? "inputLight" : "inputDark"
+                }
                 type="text"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
@@ -79,6 +113,18 @@ function NoteList({
             <Form.Group controlId="tags">
               <Form.Label>Buscar por etiquetas</Form.Label>
               <ReactSelect
+                styles={{
+                  option: (styles) => ({
+                    ...styles,
+                    color: "black",
+                    cursor: "pointer",
+                  }),
+                  control: (styles) => ({
+                    ...styles,
+                    background: contextTheme === "Light" ? "white" : "#1D2135",
+                    border: contextTheme === "Light" ? "" : "none"
+                  }),
+                }}
                 value={selectedTags.map((tag) => {
                   return { label: tag.label, value: tag.id };
                 })}
@@ -120,18 +166,21 @@ function NoteList({
 }
 
 function NoteCard({ id, title, tags }: SimplifiedNote) {
+  const { contextTheme } = useThemeContext();
   return (
     <Card
       as={Link}
       to={`/${id}`}
-      className={`h-100 text-reset text-decoration-none ${styles.card}`}
+      className={`h-100 text-reset text-decoration-none 
+        ${styles.card} 
+        ${contextTheme === "Light" ? "cardLight" : "cardDark"}`}
     >
       <Card.Body>
         <Stack
           gap={2}
           className="align-items-center justify-content-center h-100"
         >
-          <span className="fs-5">{title}</span>
+          <span className={`fs-5`}>{title}</span>
           {tags.length > 0 && (
             <Stack
               gap={1}
@@ -176,7 +225,12 @@ function EditTagsModal({
                   />
                 </Col>
                 <Col xs="auto">
-                  <Button onClick={() => onDeleteTag(tag.id)} variant="outline-danger">&times;</Button>
+                  <Button
+                    onClick={() => onDeleteTag(tag.id)}
+                    variant="outline-danger"
+                  >
+                    &times;
+                  </Button>
                 </Col>
               </Row>
             ))}
