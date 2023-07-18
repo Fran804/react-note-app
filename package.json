@@ -1,7 +1,7 @@
 {
   "name": "react-note-app",
   "private": true,
-  "homepage": "https://fran804.github.io/react-note-app/",
+  "homepage": "https://fran804.github.io/react-note-app/#",
   "version": "0.0.0",
   "type": "module",
   "scripts": {
